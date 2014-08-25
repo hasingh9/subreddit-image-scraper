@@ -5,7 +5,6 @@ import re
 
 def download(sub):
 	url="http://www.reddit.com/r/"+sub+".json"
-	print(url)
 	target=requests.get(url)
 	print(target.status_code)
 	if target.status_code!=200:
@@ -18,6 +17,7 @@ def download(sub):
 	temp=[i['data']['url'] for i in info]
 	names=[i['data']['title'] for i in info]
 	for i,elem in enumerate(names):
+		#set name as per linux restrictions
 		names[i]=re.sub(r'[^A-Za-z0123456789._-]',"",names[i]).replace(' ','_').strip('_')
 	
 	for en,i in enumerate(temp):
@@ -28,7 +28,6 @@ def download(sub):
 			print(status_code)
 			sys.exit()
 		title=names[temp.index(i)]
-		print(title)
 		with open(title+".jpg","wb") as handle:
 			print("Downloading :  ",title,"  ",en+1,"\n")
 			for chunk in target.iter_content(1024):
